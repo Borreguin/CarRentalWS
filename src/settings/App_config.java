@@ -12,7 +12,10 @@ public class App_config {
 
 
     public final static String BusinessModelDB_IP = "localhost";
-    public final static String BusinessModelDB_Port = "9090";
+    public final static String BusinessModelDB_Port = "5432";
+    public final static String BusinessModelDB_Name = "businessmodel";
+    public final static String DB_User = "businessmodel";
+
     public final static String BusinessTransactionsDB_IP = "localhost";
     public final static String BusinessTransactionsDB_Port = "9090";
 }
