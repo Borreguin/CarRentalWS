@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="WebService">
+    <output-path>$PROJECT_DIR$/out/artifacts/WebService</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="CarRentalWS" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Jersey-2.2" />
+          <element id="library" level="project" name="postgresql:postgresql:9.2-1002.jdbc4" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -11,4 +11,9 @@ public class Business_conf {
      */
     public static final int young_age = 25;
 
+    // For simplicity and assuming that we are not going to change
+    // the classification of the cars:
+    public static final String car_classification = "'small', 'sport', 'SUV'";
+
+
 }

@@ -23,12 +23,13 @@ public class MainApp extends Application{
      */
 
 
-
+    /**
+     * HashSet h contains the included services for this Application
+     * @return a collection of classes of services.
+     */
     @Override
     public Set<Class<?>> getClasses(){
-        /***
-         *  HashSet h contains the included services for this Application
-         */
+
         HashSet h = new HashSet<Class<?>>();
         // Here include the needed services
         /*h.add(MainPage.class);
@@ -36,7 +37,8 @@ public class MainApp extends Application{
         h.add(imageService.class);
         h.add(BookService.class);*/
         PostgreSQLHandler post = new PostgreSQLHandler();
-        post.create_car_table();
+        //post.create_car_table();
+        //post.create_client_table();
 
         return h;
     }

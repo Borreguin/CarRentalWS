@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Jersey-2.2" level="project" />
+    <orderEntry type="library" name="postgresql:postgresql:9.2-1002.jdbc4" level="project" />
   </component>
 </module>
