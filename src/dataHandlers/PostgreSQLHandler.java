@@ -1,5 +1,7 @@
 package dataHandlers;
 
+import classes.Car;
+import classes.Client;
 import settings.App_config;
 import settings.Business_conf;
 
@@ -20,16 +22,16 @@ public class PostgreSQLHandler {
     private Connection c = null;
 
     // Car table settings:
-    String TableName = "car_tb";
-    String ModelID = "model";
-    String TypeID = "type";
-    String ID_car = "id";
+    private static final String TableNameCar = "car_tb";
+    private static final String ModelID = "model";
+    private static final String TypeID = "type";
+    private static final String ID_car = "id";
 
     // Client table settings:
-    String TableName = "client_tb";
-    String ClientAge = "age";
-    String Membership = "type";
-    String ID_client = "id_client";
+    private static final String TablenameCl = "client_tb";
+    private static final String ClientAge = "age";
+    private static final String Membership = "membership";
+    private static final String ID_client = "id_client";
 
 
     /**
@@ -47,13 +49,15 @@ public class PostgreSQLHandler {
                                     ":" + App_config.BusinessModelDB_Port    +
                                     "/" + App_config.BusinessModelDB_Name ,
                                     App_config.DB_User, "test");
-
+            create_car_table();
+            create_client_table();
 
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+
         System.out.println("Opened business model database successfully");
     }
 
@@ -75,7 +79,7 @@ public class PostgreSQLHandler {
         PreparedStatement ps;
         try {
 
-            String sql_carTable = "CREATE TABLE " + TableName +
+            String sql_carTable = "CREATE TABLE IF NOT EXISTS " + TableNameCar +
                     "("
                         + ID_car  +  " INTEGER PRIMARY KEY, "
                         + ModelID +  " VARCHAR (50) UNIQUE NOT NULL, "
@@ -106,13 +110,13 @@ public class PostgreSQLHandler {
         PreparedStatement ps;
         try {
 
-            String sql_carTable = "CREATE TABLE " + TableName +
+            String sql_statement = "CREATE TABLE IF NOT EXISTS " + TablenameCl +
                     "("
                     + ID_client  +  " INTEGER PRIMARY KEY, "
                     + ClientAge +   " INTEGER NOT NULL, "
                     + Membership  + " BOOLEAN NOT NULL"
                     + ")";
-            ps = c.prepareCall(sql_carTable);
+            ps = c.prepareCall(sql_statement);
             ps.execute();
 
             return true;
@@ -122,6 +126,49 @@ public class PostgreSQLHandler {
         }
     }
 
-    public
+
+    /***
+     * Insert a car in the Business Model
+     * @return True if it was successfully inserted, false otherwise
+     */
+    public boolean insert_car(Car car){
+
+        PreparedStatement ps;
+        try {
+            String sql_insert_car = "INSERT INTO " + TableNameCar +
+                    "(" + ID_car  + ", " + ModelID + ", " + TypeID + ") " +
+                    "VALUES (" + car.getId() + ", '" + car.getModel() + "', '" +car.getType()+ "')";
+
+            ps = c.prepareCall(sql_insert_car);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    /***
+     * Insert a car in the Business Model
+     * @return True if it was successfully inserted, false otherwise
+     */
+    public boolean insert_client(Client client){
+        PreparedStatement ps;
+        try {
+            String sql_insert_cl = "INSERT INTO " + TablenameCl +
+                    "(" + ID_client  + ", " + ClientAge + ", " + Membership + ") " +
+                    "VALUES (" + client.getId_client() + ", '" + client.getAge() + "', '" +
+                    client.getMembership() + "')";
+
+            ps = c.prepareCall(sql_insert_cl);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
 }
