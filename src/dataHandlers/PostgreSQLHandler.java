@@ -5,16 +5,23 @@ import classes.Client;
 import settings.App_config;
 import settings.Business_conf;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /***
  *   Author: Roberto Sanchez A. 
  *   Date:   12/19/17
  ***/
 
+/**
+ * This manages the connection with the PostgreSQL server
+ * This DB keeps the Business model to deal with.
+ * The Handler tests the connection and the existence of the Business Model tables.
+ * -> Note: Settings of the DB Server are in /settings/App_config.java
+ * This code assumes a trustful environment therefore not security policies are applied.
+ *    Ex: DB administrator password
+ */
 
 
 public class PostgreSQLHandler {
@@ -33,15 +40,11 @@ public class PostgreSQLHandler {
     private static final String Membership = "membership";
     private static final String ID_client = "id_client";
 
-
     /**
-     * This manage the connection with the PostgreSQL server
-     * This DB keeps the Business model to deal with.
-     */
+     *  Creating the connection and tables (if it is needed)
+     **/
     public PostgreSQLHandler() {
         try {
-            Class.forName("org.postgresql.Driver");
-
             Class.forName("org.postgresql.Driver");
 
             c = DriverManager
@@ -60,7 +63,6 @@ public class PostgreSQLHandler {
 
         System.out.println("Opened business model database successfully");
     }
-
 
 
     /**
@@ -150,7 +152,7 @@ public class PostgreSQLHandler {
 
 
     /***
-     * Insert a car in the Business Model
+     * Insert a client in the Business Model
      * @return True if it was successfully inserted, false otherwise
      */
     public boolean insert_client(Client client){
@@ -170,5 +172,150 @@ public class PostgreSQLHandler {
         return true;
     }
 
+    /***
+     * Delete a car from the Business Model
+     * @return True if it was successfully inserted, false otherwise
+     */
+    public boolean delete_car(Car car){
+        PreparedStatement ps;
+        try {
+            String sql_insert_cl = "DELETE FROM " + TableNameCar +
+                    " WHERE " + ID_car + " = " + car.getId() ;
+            ps = c.prepareCall(sql_insert_cl);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /***
+     * Delete a client from the Business Model
+     * @return True if it was successfully inserted, false otherwise
+     */
+    public boolean delete_client(Client client){
+        PreparedStatement ps;
+        try {
+            String sql_statement = "DELETE FROM " + TablenameCl +
+                    " WHERE " + ID_client + " = " + client.getId_client() ;
+            ps = c.prepareCall(sql_statement);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /***
+     * Find a car in the Business Model
+     * @return a valid car if it was found, a empty car otherwise
+     */
+    public Car getCar(String modelID){
+        PreparedStatement ps;
+        Car car;
+        try {
+            String sql_statement = "SELECT * FROM " + TableNameCar +
+                    " WHERE " + ModelID + " = " + modelID;
+            ps = c.prepareCall(sql_statement);
+            ps.execute();
+
+            ResultSet rs = ps.getResultSet();
+            car = new Car(
+                    rs.getInt(1),       //ID
+                    rs.getString(2),    //Model
+                    rs.getString(3)     //Type
+            );
+            return car;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new Car("","");
+        }
+    }
+
+    /***
+     * Find a client in the Business Model
+     * @return a valid client if it was found, a empty client otherwise
+     */
+    public Client getClient(String id){
+        PreparedStatement ps;
+        Client client;
+        try {
+            String sql_statement = "SELECT * FROM " + TablenameCl +
+                    " WHERE " + ID_client + " = " + id;
+            ps = c.prepareCall(sql_statement);
+            ps.execute();
+
+            ResultSet rs = ps.getResultSet();
+            client = new Client(
+                    rs.getInt(1),       //ID
+                    rs.getBoolean(2),   //Membership
+                    rs.getInt(3)        //client age
+            );
+            return client;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new Client(false,0);
+        }
+    }
+
+    /***
+     * Gets all cars from the Business Model
+     * @return a valid list of cars if cars were found, a empty car list otherwise
+     */
+    public List<Car> getAllCars(String modelID){
+        PreparedStatement ps;
+        List<Car> cars = new ArrayList<>();
+        try {
+            String sql_statement = "SELECT * FROM " + TablenameCl;
+            ps = c.prepareCall(sql_statement);
+            ps.execute();
+
+            ResultSet rs = ps.getResultSet();
+            while (rs.next()) {
+                cars.add(
+                        new Car(
+                        rs.getInt(1),       //ID
+                        rs.getString(2),    //Model
+                        rs.getString(3)     //Type
+                    ));
+            }
+            return cars;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return cars;
+        }
+    }
+
+    /***
+     * Get all clients from the Business Model
+     * @return a valid list of client if clients were found, a empty list of clients otherwise
+     */
+    public List<Client> getAllClients(String id){
+        PreparedStatement ps;
+        List<Client> clients = new ArrayList<>();
+        try {
+            String sql_statement = "SELECT * FROM " + TablenameCl;
+            ps = c.prepareCall(sql_statement);
+            ps.execute();
+
+            ResultSet rs = ps.getResultSet();
+            while(rs.next()){
+
+                clients.add(
+                        new Client(
+                        rs.getInt(1),       //ID
+                        rs.getBoolean(2),   //Membership
+                        rs.getInt(3)        //client age
+                        )
+                );
+            }
+            return clients;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return clients;
+        }
+    }
 
 }

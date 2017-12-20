@@ -1,3 +1,5 @@
+import classes.Car;
+import classes.Client;
 import dataHandlers.PostgreSQLHandler;
 
 import javax.ws.rs.ApplicationPath;
@@ -11,16 +13,16 @@ import java.util.Set;
  ***/
 
 @ApplicationPath("/")
-
+/**
+ * * It implements the main application where we can add the needed services
+ * For now only:
+ *   -
+ *   -
+ *
+ * @return running application
+ */
 public class MainApp extends Application{
-    /***
-     * It implements the main application where we can add the needed services
-     * For now only:
-     *   -
-     *   -
-     *
-     * @return running application
-     */
+
 
 
     /**
@@ -39,6 +41,10 @@ public class MainApp extends Application{
         PostgreSQLHandler post = new PostgreSQLHandler();
         //post.create_car_table();
         //post.create_client_table();
+        post.insert_car(new Car("Dwarfy", "small"));
+        post.insert_client(new Client(true, 24));
+        Car car = post.getCar("Dwarfy");
+        post.delete_car(car);
 
         return h;
     }

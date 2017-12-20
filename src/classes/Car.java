@@ -5,15 +5,26 @@ package classes;
  *   Date:   12/19/17
  ***/
 public class Car {
-    private long id;
+    private int id;
     private String type;
     private String model;
+
+    public Car(String model, String type) {
+        this.type = type;
+        this.model = model;
+    }
+
+    public Car(int id, String model, String type) {
+        this.id = id;
+        this.type = type;
+        this.model = model;
+    }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

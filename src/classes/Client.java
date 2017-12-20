@@ -16,9 +16,20 @@ public class Client {
      * could be added easily in this class.
      */
 
-    private long id_client;
+    private int id_client;
     private Boolean  membership;
     private int age;
+
+    public Client(int id_client, Boolean membership, int age) {
+        this.id_client = id_client;
+        this.membership = membership;
+        this.age = age;
+    }
+
+    public Client(Boolean membership, int age) {
+        this.membership = membership;
+        this.age = age;
+    }
 
     //private String name;
 
@@ -26,7 +37,7 @@ public class Client {
         return id_client;
     }
 
-    public void setId_client(long id_client) {
+    public void setId_client(int id_client) {
         this.id_client = id_client;
     }
 
