@@ -1,3 +1,5 @@
+
+
 package dataHandlers;
 
 import classes.Car;
@@ -9,10 +11,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/***
- *   Author: Roberto Sanchez A. 
+/*
+ *   Author: Roberto Sanchez A.
  *   Date:   12/19/17
- ***/
+ */
 
 /**
  * This manages the connection with the PostgreSQL server
@@ -27,6 +29,7 @@ import java.util.List;
 public class PostgreSQLHandler {
 
     private Connection c = null;
+    private Business_conf business_conf = new Business_conf();
 
     // Car table settings:
     private static final String TableNameCar = "car_tb";
@@ -69,13 +72,13 @@ public class PostgreSQLHandler {
      * Creates a table for managing information about the available cars
      * @return True if it was successfully created, false otherwise.
      */
-    public boolean create_car_table(){
+    private boolean create_car_table(){
 
 
         // TODO: Car classification could be done by another relational table
         // -- For simplicity and assuming that we are not going to change
         // the classification of the cars:
-        String TypeCar = Business_conf.car_classification;
+        String TypeCar = business_conf.getCar_classification();
         // --------------------------------------------------------------
 
         PreparedStatement ps;
@@ -83,7 +86,7 @@ public class PostgreSQLHandler {
 
             String sql_carTable = "CREATE TABLE IF NOT EXISTS " + TableNameCar +
                     "("
-                        + ID_car  +  " INTEGER PRIMARY KEY, "
+                        + ID_car  +  " SERIAL PRIMARY KEY, "
                         + ModelID +  " VARCHAR (50) UNIQUE NOT NULL, "
                         + TypeID  +  " VARCHAR (50) CHECK (" + TypeID + " in (" + TypeCar +"))"
                     + ")";
@@ -102,7 +105,7 @@ public class PostgreSQLHandler {
      * Creates a table for managing information about the clients
      * @return True if it was successfully created, false otherwise.
      */
-    public boolean create_client_table(){
+    private boolean create_client_table(){
 
         // TODO: This implementation could add additional data for the client
         // -- For simplicity not additional data as e-mail, name, and others
@@ -114,7 +117,7 @@ public class PostgreSQLHandler {
 
             String sql_statement = "CREATE TABLE IF NOT EXISTS " + TablenameCl +
                     "("
-                    + ID_client  +  " INTEGER PRIMARY KEY, "
+                    + ID_client  +  " SERIAL PRIMARY KEY, "
                     + ClientAge +   " INTEGER NOT NULL, "
                     + Membership  + " BOOLEAN NOT NULL"
                     + ")";
@@ -138,8 +141,8 @@ public class PostgreSQLHandler {
         PreparedStatement ps;
         try {
             String sql_insert_car = "INSERT INTO " + TableNameCar +
-                    "(" + ID_car  + ", " + ModelID + ", " + TypeID + ") " +
-                    "VALUES (" + car.getId() + ", '" + car.getModel() + "', '" +car.getType()+ "')";
+                    "("  + ModelID + ", " + TypeID + ") " +
+                    "VALUES ('"  + car.getModel() + "', '" +car.getType()+ "')";
 
             ps = c.prepareCall(sql_insert_car);
             ps.execute();
@@ -158,12 +161,12 @@ public class PostgreSQLHandler {
     public boolean insert_client(Client client){
         PreparedStatement ps;
         try {
-            String sql_insert_cl = "INSERT INTO " + TablenameCl +
-                    "(" + ID_client  + ", " + ClientAge + ", " + Membership + ") " +
-                    "VALUES (" + client.getId_client() + ", '" + client.getAge() + "', '" +
-                    client.getMembership() + "')";
+            String sql_st = "INSERT INTO " + TablenameCl +
+                    "("  + ClientAge + ", " + Membership + ") " +
+                    "VALUES (" + client.getAge() + ", " +
+                    client.getMembership() + ")";
 
-            ps = c.prepareCall(sql_insert_cl);
+            ps = c.prepareCall(sql_st);
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -179,9 +182,9 @@ public class PostgreSQLHandler {
     public boolean delete_car(Car car){
         PreparedStatement ps;
         try {
-            String sql_insert_cl = "DELETE FROM " + TableNameCar +
+            String sql_st = "DELETE FROM " + TableNameCar +
                     " WHERE " + ID_car + " = " + car.getId() ;
-            ps = c.prepareCall(sql_insert_cl);
+            ps = c.prepareCall(sql_st);
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -217,11 +220,12 @@ public class PostgreSQLHandler {
         Car car;
         try {
             String sql_statement = "SELECT * FROM " + TableNameCar +
-                    " WHERE " + ModelID + " = " + modelID;
+                    " WHERE " + ModelID + " = '" + modelID + "'";
             ps = c.prepareCall(sql_statement);
             ps.execute();
 
             ResultSet rs = ps.getResultSet();
+            rs.next();
             car = new Car(
                     rs.getInt(1),       //ID
                     rs.getString(2),    //Model
@@ -248,6 +252,7 @@ public class PostgreSQLHandler {
             ps.execute();
 
             ResultSet rs = ps.getResultSet();
+            rs.next();
             client = new Client(
                     rs.getInt(1),       //ID
                     rs.getBoolean(2),   //Membership
@@ -264,11 +269,11 @@ public class PostgreSQLHandler {
      * Gets all cars from the Business Model
      * @return a valid list of cars if cars were found, a empty car list otherwise
      */
-    public List<Car> getAllCars(String modelID){
+    public List<Car> getAllCars(){
         PreparedStatement ps;
         List<Car> cars = new ArrayList<>();
         try {
-            String sql_statement = "SELECT * FROM " + TablenameCl;
+            String sql_statement = "SELECT * FROM " + TableNameCar;
             ps = c.prepareCall(sql_statement);
             ps.execute();
 
@@ -292,7 +297,7 @@ public class PostgreSQLHandler {
      * Get all clients from the Business Model
      * @return a valid list of client if clients were found, a empty list of clients otherwise
      */
-    public List<Client> getAllClients(String id){
+    public List<Client> getAllClients(){
         PreparedStatement ps;
         List<Client> clients = new ArrayList<>();
         try {
@@ -305,9 +310,9 @@ public class PostgreSQLHandler {
 
                 clients.add(
                         new Client(
-                        rs.getInt(1),       //ID
-                        rs.getBoolean(2),   //Membership
-                        rs.getInt(3)        //client age
+                                rs.getInt(1), //ID
+                                rs.getBoolean(3), //Membership
+                                rs.getInt(2) //client age
                         )
                 );
             }
