@@ -3,12 +3,16 @@ package wbservices;
 import classes.Car;
 import dataHandlers.PostgreSQLHandler;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.util.List;
+
+
+import static settings.App_config.FAILURE_RESULT;
+import static settings.App_config.SUCCESS_RESULT;
 
 /*
 *   Author: Roberto Sanchez A. 
@@ -21,6 +25,17 @@ public class CarService {
     private PostgreSQLHandler post = new PostgreSQLHandler();
 
 
+
+    // Gets all cars:
+    @GET
+    @Path("/cars_xml")
+    @Produces(MediaType.APPLICATION_XML)
+    public List<Car> getCarsXML(){
+        List<Car> cars = post.getAllCars();
+        return cars;
+    }
+
+
     // Gets all cars:
     @GET
     @Path("/cars")
@@ -30,11 +45,11 @@ public class CarService {
         return cars;
     }
 
-    /*
+
     // Gets car by idModel
     @GET
     @Path("/cars/{carModel}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_XML)
     public Car getCar(@PathParam("carModel") String modelID){
         return post.getCar(modelID);
     }
@@ -42,7 +57,7 @@ public class CarService {
     // creating a new car
     @POST
     @Path("/cars")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_XML)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public String createCar(
                              @FormParam("modelID") String modelID,
@@ -58,7 +73,6 @@ public class CarService {
     }
 
 
-
     // Delete a car
     @DELETE
     @Path("/cars/{carModel}")
@@ -68,14 +82,14 @@ public class CarService {
         if(result)
             return SUCCESS_RESULT;
         return FAILURE_RESULT;
-    }*/
+    }
 
     // Options:
-   /* @OPTIONS
+    @OPTIONS
     @Path("/cars")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_XML)
     public String getSupportedOperations(){
 
         return "<operations>GET, PUT, POST, DELETE</operations>";
-    }*/
+    }
 }

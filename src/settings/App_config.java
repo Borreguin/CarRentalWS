@@ -27,9 +27,10 @@ public class App_config {
     // Using a Gregorian calendar:
     public final static int idMonday = 2;
 
-    // Messages:
-    public static final String SUCCESS_RESULT = "Successful operation";
-    public static final String FAILURE_RESULT = "Fail";
+
+    // Notification Messages:
+    public static final String SUCCESS_RESULT = "<result>success</result>";
+    public static final String FAILURE_RESULT = "<result>failure</result>";
 
     // path project
     private String pathProject;

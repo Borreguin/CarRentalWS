@@ -33,8 +33,8 @@ public class PostgreSQLHandler {
 
     // Car table settings:
     private static final String TableNameCar = "car_tb";
-    private static final String ModelID = "model";
-    private static final String TypeID = "type";
+    public static final String ModelID = "model";
+    public static final String TypeID = "type";
     private static final String ID_car = "id";
 
     // Client table settings:
