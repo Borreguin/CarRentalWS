@@ -26,4 +26,27 @@ public class App_config {
     public SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd'T'hh:mm:ss.SSS'Z'");
     // Using a Gregorian calendar:
     public final static int idMonday = 2;
+
+    // Messages:
+    public static final String SUCCESS_RESULT = "Successful operation";
+    public static final String FAILURE_RESULT = "Fail";
+
+    // path project
+    private String pathProject;
+
+    public App_config() {
+
+        // Getting the root directory:
+        String suffix = "WEB-INF";
+        String path[] = App_config.class.getResource("App_config.class").toString().split(suffix);
+        pathProject = path[0].replace("file:/", "") + suffix;
+
+    }
+
+    public String root() {
+
+        return "/" + this.pathProject; //for linux
+        //return this.pathProject; //for Windows
+
+    }
 }

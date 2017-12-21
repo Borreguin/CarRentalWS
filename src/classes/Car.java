@@ -34,7 +34,7 @@ public class Car {
         this.pricePerDay = Business_conf.getCarPrice().get(type);
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

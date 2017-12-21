@@ -7,7 +7,15 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Jersey-2.2" level="project" />
     <orderEntry type="library" name="postgresql:postgresql:9.2-1002.jdbc4" level="project" />
+    <orderEntry type="library" name="org.json:json:20170516" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.1 - RESTful Web Service" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.1 - JSON Processing (JSR 353)" level="application_server_libraries" />
+    <orderEntry type="library" name="org.glassfish.jersey.core:jersey-client:2.10" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 5.0.0 - Bean Validation" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 5.0.0 - RESTful Web Service" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 5.0.0 - JSON Processing (JSR 353)" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 5.0.0 - Connector Architecture (JSR 322)" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 5.0.0 - WebSocket" level="application_server_libraries" />
   </component>
 </module>

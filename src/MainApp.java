@@ -1,15 +1,9 @@
 import business_logic.Core;
-import classes.Car;
-import classes.Client;
-import dataHandlers.PostgreSQLHandler;
-import org.json.JSONObject;
-import settings.Business_conf;
+import wbservices.CarService;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import java.text.ParseException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /*
@@ -37,11 +31,14 @@ public class MainApp extends Application{
     public Set<Class<?>> getClasses(){
 
         HashSet h = new HashSet<Class<?>>();
+        h.add(MainPage.class);
+        h.add(CarService.class);
+
         // Here include the needed services
-        /*h.add(MainPage.class);
+        /* h.add(MainPage.class);
         h.add(UserService.class);
         h.add(imageService.class);
-        h.add(BookService.class);*/
+        h.add(BookService.class);
         PostgreSQLHandler post = new PostgreSQLHandler();
         //post.create_car_table();
         //post.create_client_table();
@@ -49,7 +46,7 @@ public class MainApp extends Application{
         //post.insert_car(new Car("Dwarfy3", "small"));
         //post.insert_client(new Client(true, 24));
 
-        List<Car> cars = post.getAllCars();
+        /*List<Car> cars = post.getAllCars();
         //List<Client> clients = post.getAllClients();
 
         //Car car = post.getCar("Dwarfy");
@@ -59,7 +56,7 @@ public class MainApp extends Application{
         //json = "{\"rentDates\":[\"2017-11-19T05:00:00.000Z\",\"2017-11-20T05:00:00.000Z\",\"2017-11-21T05:00:00.000Z\"],\"car\":{\"model\":\"Cherato\",\"type\":\"sport\"},\"membership\":false}";
 
         JSONObject jsonObj = new JSONObject(json);
-        core.getTotalOfRent(jsonObj);
+        core.getTotalOfRent(jsonObj);*/
 
 
         return h;

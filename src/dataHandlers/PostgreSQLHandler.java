@@ -179,11 +179,11 @@ public class PostgreSQLHandler {
      * Delete a car from the Business Model
      * @return True if it was successfully inserted, false otherwise
      */
-    public boolean delete_car(Car car){
+    public boolean delete_car(String model){
         PreparedStatement ps;
         try {
             String sql_st = "DELETE FROM " + TableNameCar +
-                    " WHERE " + ID_car + " = " + car.getId() ;
+                    " WHERE " + ModelID + " = " + model;
             ps = c.prepareCall(sql_st);
             ps.execute();
         } catch (SQLException e) {

@@ -120,11 +120,7 @@ public class Core {
     private Boolean checkJSONObject(JSONObject jsonObj){
         Set keys = jsonObj.keySet();
         Set<String> toCheck = new HashSet<>(Arrays.asList(KeyAge, KeyCar, KeyRentDates, KeyMembership));
-        if(keys.equals(toCheck)){
-            return true;
-        }
-        return false;
-
+        return keys.equals(toCheck);
     }
 
     /**
