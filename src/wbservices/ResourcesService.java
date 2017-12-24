@@ -1,6 +1,7 @@
 package wbservices;
 
 import classes.Car;
+import UserManagement.UserDao;
 import dataHandlers.PostgreSQLHandler;
 
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,16 +21,16 @@ import static settings.App_config.SUCCESS_RESULT;
 *   Date:   12/21/17
 */
 
-@Path("/CarService")
-public class CarService {
+@Path("/resources")
+public class ResourcesService {
 
     private PostgreSQLHandler post = new PostgreSQLHandler();
-
+    private UserDao userDao = new UserDao();
 
 
     // Gets all cars:
     @GET
-    @Path("/cars_xml")
+    @Path("/cars")
     @Produces(MediaType.APPLICATION_XML)
     public List<Car> getCarsXML(){
         List<Car> cars = post.getAllCars();
@@ -38,7 +40,7 @@ public class CarService {
 
     // Gets all cars:
     @GET
-    @Path("/cars")
+    @Path("/jcars")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Car> getCars(){
         List<Car> cars = post.getAllCars();
@@ -91,5 +93,20 @@ public class CarService {
     public String getSupportedOperations(){
 
         return "<operations>GET, PUT, POST, DELETE</operations>";
+    }
+
+
+    @GET
+    @Path("/users")
+    @Produces(MediaType.APPLICATION_XML)
+    public List<Car> getUsers(){
+        return userDao.getAllUsers();
+    }
+
+    @GET
+    @Path("/users_j")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Car> getUsers2(){
+        return userDao.getAllUsers();
     }
 }

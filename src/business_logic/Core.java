@@ -82,7 +82,7 @@ public class Core {
         }
 
         // Apply insurance policy
-        insurance_total = insurancePolicy.apply(rentDates.size(),renterClient.getAge(),rentedCar.getType());
+        insurance_total = insurancePolicy.apply(rentDates.size(),renterClient.getAge(), rentedCar.getType());
 
         total = subtotal - subtotal*discount_total  + insurance_total;
 

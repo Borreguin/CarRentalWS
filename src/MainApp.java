@@ -1,5 +1,7 @@
 import business_logic.Core;
-import wbservices.CarService;
+import classes.Car;
+import dataHandlers.PostgreSQLHandler;
+import wbservices.ResourcesService;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -32,18 +34,18 @@ public class MainApp extends Application{
 
         HashSet h = new HashSet<Class<?>>();
         h.add(MainPage.class);
-        h.add(CarService.class);
+        h.add(ResourcesService.class);
 
         // Here include the needed services
-        /* h.add(MainPage.class);
-        h.add(UserService.class);
-        h.add(imageService.class);
-        h.add(BookService.class);
+         h.add(MainPage.class);
+        //h.add(UserService.class);
+        //h.add(imageService.class);
+        //h.add(BookService.class);
         PostgreSQLHandler post = new PostgreSQLHandler();
         //post.create_car_table();
         //post.create_client_table();
-        //post.insert_car(new Car("Eveo", "sport"));
-        //post.insert_car(new Car("Dwarfy3", "small"));
+        post.insert_car(new Car("Eveo", "sport"));
+        post.insert_car(new Car("Dwarfy3", "small"));
         //post.insert_client(new Client(true, 24));
 
         /*List<Car> cars = post.getAllCars();

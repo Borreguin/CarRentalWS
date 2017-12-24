@@ -2,6 +2,7 @@ package settings;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /***
  *   Author: Roberto Sanchez A. 
@@ -19,7 +20,7 @@ public class Business_conf {
     // TODO: (classification of cars could be in a database)
     // For simplicity and assuming that we are not going to change
     // the classification of the cars, and prices:
-    private static Map<String, Float> carPrice = new HashMap<>();
+    private Map<String, Float> carPrice = new HashMap<>();
 
     // TODO: list of discounts could be in a database
     // For simplicity, let's put the list of discounts in a HashMap variable
@@ -60,15 +61,25 @@ public class Business_conf {
      */
     public String getCar_classification(){
 
-        String rs  = carPrice.keySet().toString();
-        rs = rs.replace("[","'");
-        rs = rs.replace("]","'");
-        rs = rs.replace(",","','");
+        Set rsK  = carPrice.keySet();
+        String rs = "#";
+        for(Object ob : rsK){
+            rs += ",'" + ob + "'";
+        }
+        rs = rs.replace("#,","");
         return rs;
     }
 
-    public static Map<String, Float> getCarPrice() {
-        return carPrice;
+    public float getCarPrice(String typeCar) {
+        float rs = 0.f;
+        try{
+            rs = carPrice.get(typeCar);
+        }
+        catch (Exception e){
+            System.out.print("Invalid type of the car: " + typeCar);
+            e.printStackTrace();
+        }
+        return rs;
     }
 
     public static Map<String, Float> getDiscountValues() {

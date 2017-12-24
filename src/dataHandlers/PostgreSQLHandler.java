@@ -3,6 +3,7 @@
 package dataHandlers;
 
 import classes.Car;
+import classes.Car;
 import classes.Client;
 import settings.App_config;
 import settings.Business_conf;
@@ -142,7 +143,7 @@ public class PostgreSQLHandler {
         try {
             String sql_insert_car = "INSERT INTO " + TableNameCar +
                     "("  + ModelID + ", " + TypeID + ") " +
-                    "VALUES ('"  + car.getModel() + "', '" +car.getType()+ "')";
+                    "VALUES ('"  + car.getModel() + "', '" + car.getType()+ "')";
 
             ps = c.prepareCall(sql_insert_car);
             ps.execute();
@@ -217,7 +218,7 @@ public class PostgreSQLHandler {
      */
     public Car getCar(String modelID){
         PreparedStatement ps;
-        Car car;
+        Car car = null;
         try {
             String sql_statement = "SELECT * FROM " + TableNameCar +
                     " WHERE " + ModelID + " = '" + modelID + "'";
@@ -234,7 +235,7 @@ public class PostgreSQLHandler {
             return car;
         } catch (SQLException e) {
             e.printStackTrace();
-            return new Car("","");
+            return car;
         }
     }
 
