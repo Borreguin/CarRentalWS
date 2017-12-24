@@ -3,13 +3,12 @@ package TestModule;
 
 import classes.Car;
 import dataHandlers.PostgreSQLHandler;
-import org.glassfish.jersey.client.ClientConfig;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 import static settings.App_config.SUCCESS_RESULT;
@@ -25,10 +24,11 @@ public class Tester {
     // org.glassfish.jersey.core:jersey-client:2.10
     // needs guava 2.24 or superior.
     private Client webClient;
-    private String REST_SERVICE_URL = "http://localhost:8080/WebService/CarService/cars";
+    private String REST_SERVICE_URL = "http://localhost:8080/WebService/ResourcesService/cars";
     private static final String PASS = "pass";
     private static final String FAIL = "fail";
     private static final String modeID_toTest = "Test Model";
+    private PostgreSQLHandler post = new PostgreSQLHandler();
 
 
     private void init() {
@@ -39,13 +39,15 @@ public class Tester {
         Tester tester = new Tester();
         //initialize the tester
         tester.init();
-        //test all cars Web Service Method
+        //testing the Web Service Method
+        // Insert available cars:
+
         //test get all cars Web Service Method
         tester.testGetAllCars();
         //test get car Web Service Method
         tester.testGetCar();
         //test add car Web Service Method
-        tester.testAddCar(modeID_toTest);
+        tester.testAddCar(new Car(modeID_toTest,"small"));
         //test delete car Web Service Method
         tester.testDeleteCar(modeID_toTest);
 
@@ -59,7 +61,7 @@ public class Tester {
         String result = FAIL;
         try {
             List<Car> cars = webClient
-                    .target(REST_SERVICE_URL + "_xml")
+                    .target(REST_SERVICE_URL)
                     .request(MediaType.APPLICATION_XML)
                     .get(list);
             result = PASS;
@@ -78,8 +80,8 @@ public class Tester {
     //Tester: Get Car of id 1
     //Tester: Check if car is same as sample car
     private void testGetCar() {
-        Car SampleCar = new Car("","");
-        SampleCar.setId(1);
+        Car sampleCar = new Car("","");
+        sampleCar.setId(1);
         String result = FAIL;
 
         try {
@@ -90,7 +92,7 @@ public class Tester {
                     .request(MediaType.APPLICATION_XML)
                     .get(Car.class);
 
-            if (SampleCar.getId() == car.getId()) {
+            if (sampleCar.getId() == car.getId()) {
                 result = PASS;
             }
 
@@ -105,10 +107,10 @@ public class Tester {
 
     //Test: Add a car model: Model Test
     //Test: Check if result is a successfully XML.
-    private void testAddCar(String modeID_toTest){
+    private void testAddCar(Car car){
         Form form = new Form();
-        form.param(PostgreSQLHandler.ModelID, modeID_toTest);
-        form.param(PostgreSQLHandler.TypeID, "sport");
+        form.param(PostgreSQLHandler.ModelID, car.getModel());
+        form.param(PostgreSQLHandler.TypeID, car.getType());
 
         String callResult = webClient
                 .target(REST_SERVICE_URL)
@@ -143,6 +145,22 @@ public class Tester {
         System.out.println("Test case name: testDeleteCar, Result: " + result );
     }
 
+    private void InitialCars(){
+        List<Car> cars = new ArrayList<>();
+        cars.add(new Car("Dwafty", "small"));
+        cars.add(new Car("Halfing", "small"));
+        cars.add(new Car("Eveo","sport"));
+        cars.add(new Car("Cherato", "sport"));
+        cars.add(new Car("Vitoro", "SUV"));
+        cars.add(new Car("Exploring", "SUV"));
+
+        for(Car car : cars){
+            if(post.getCar(car.getModel()) == null){
+                post.insert_car(car);
+            }
+        }
+
+    }
 
 
 }
