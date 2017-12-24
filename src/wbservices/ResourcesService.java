@@ -1,18 +1,13 @@
 package wbservices;
 
 import classes.Car;
-import UserManagement.UserDao;
 import dataHandlers.PostgreSQLHandler;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-
 import static settings.App_config.FAILURE_RESULT;
 import static settings.App_config.SUCCESS_RESULT;
 
@@ -25,7 +20,6 @@ import static settings.App_config.SUCCESS_RESULT;
 public class ResourcesService {
 
     private PostgreSQLHandler post = new PostgreSQLHandler();
-    private UserDao userDao = new UserDao();
 
 
     // Gets all cars:
@@ -33,8 +27,7 @@ public class ResourcesService {
     @Path("/cars")
     @Produces(MediaType.APPLICATION_XML)
     public List<Car> getCarsXML(){
-        List<Car> cars = post.getAllCars();
-        return cars;
+        return post.getAllCars();
     }
 
 
@@ -43,8 +36,7 @@ public class ResourcesService {
     @Path("/jcars")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Car> getCars(){
-        List<Car> cars = post.getAllCars();
-        return cars;
+        return post.getAllCars();
     }
 
 
@@ -62,8 +54,8 @@ public class ResourcesService {
     @Produces(MediaType.APPLICATION_XML)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public String createCar(
-                             @FormParam("modelID") String modelID,
-                             @FormParam("typeID") String typeID,
+                             @FormParam("model") String modelID,
+                             @FormParam("type") String typeID,
                              @Context HttpServletResponse serveltReponse)
             throws IOException {
         Car car = new Car( modelID, typeID);
@@ -96,17 +88,5 @@ public class ResourcesService {
     }
 
 
-    @GET
-    @Path("/users")
-    @Produces(MediaType.APPLICATION_XML)
-    public List<Car> getUsers(){
-        return userDao.getAllUsers();
-    }
 
-    @GET
-    @Path("/users_j")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Car> getUsers2(){
-        return userDao.getAllUsers();
-    }
 }

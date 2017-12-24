@@ -24,11 +24,11 @@ public class Tester {
     // org.glassfish.jersey.core:jersey-client:2.10
     // needs guava 2.24 or superior.
     private Client webClient;
-    private String REST_SERVICE_URL = "http://localhost:8080/WebService/ResourcesService/cars";
+    private String REST_SERVICE_URL = "http://localhost:8080/WebService/resources/cars";
     private static final String PASS = "pass";
     private static final String FAIL = "fail";
-    private static final String modeID_toTest = "Test Model";
-    private PostgreSQLHandler post = new PostgreSQLHandler();
+    private static final Car TestingCar = new Car("Test Model","small");
+
 
 
     private void init() {
@@ -40,16 +40,20 @@ public class Tester {
         //initialize the tester
         tester.init();
         //testing the Web Service Method
-        // Insert available cars:
+        //test Insert car Web Service Method:
+        tester.testAddCar(TestingCar);
+        //test get car Web Service Method
+        tester.testGetCar(TestingCar.getModel());
+        //test Delete car Web Service Method:
+        tester.testDeleteCar(TestingCar.getModel());
 
+        // Inserting initial available cars:
+        tester.insertInitialCars();
         //test get all cars Web Service Method
         tester.testGetAllCars();
-        //test get car Web Service Method
-        tester.testGetCar();
-        //test add car Web Service Method
-        tester.testAddCar(new Car(modeID_toTest,"small"));
-        //test delete car Web Service Method
-        tester.testDeleteCar(modeID_toTest);
+
+
+
 
 
     }
@@ -79,21 +83,21 @@ public class Tester {
 
     //Tester: Get Car of id 1
     //Tester: Check if car is same as sample car
-    private void testGetCar() {
-        Car sampleCar = new Car("","");
-        sampleCar.setId(1);
+    private boolean testGetCar(String model) {
         String result = FAIL;
+        Boolean successfully = false;
 
         try {
             Car car = webClient
                     .target(REST_SERVICE_URL)
                     .path("/{carModel}")
-                    .resolveTemplate("carModel", modeID_toTest)
+                    .resolveTemplate("carModel", model)
                     .request(MediaType.APPLICATION_XML)
                     .get(Car.class);
 
-            if (sampleCar.getId() == car.getId()) {
+            if (car.getModel().equals(model)) {
                 result = PASS;
+                successfully = true;
             }
 
         } catch (Exception e) {
@@ -101,7 +105,8 @@ public class Tester {
         }
 
 
-        System.out.println("Tester case name: testGetCar, Result: " + result);
+        System.out.println("Test case name: testGetCar, Result: " + result);
+        return successfully;
     }
 
 
@@ -145,7 +150,8 @@ public class Tester {
         System.out.println("Test case name: testDeleteCar, Result: " + result );
     }
 
-    private void InitialCars(){
+    private void insertInitialCars(){
+        System.out.println("Test case name: insertInitialCars" );
         List<Car> cars = new ArrayList<>();
         cars.add(new Car("Dwafty", "small"));
         cars.add(new Car("Halfing", "small"));
@@ -155,8 +161,8 @@ public class Tester {
         cars.add(new Car("Exploring", "SUV"));
 
         for(Car car : cars){
-            if(post.getCar(car.getModel()) == null){
-                post.insert_car(car);
+            if(!testGetCar(car.getModel())){
+                testAddCar(car);
             }
         }
 

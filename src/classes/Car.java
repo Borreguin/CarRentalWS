@@ -55,7 +55,7 @@ public class Car implements Serializable {
     public String getType() {
         return type;
     }
-
+    @XmlElement
     public void setType(String type) {
         this.type = type;
     }
@@ -63,7 +63,7 @@ public class Car implements Serializable {
     public String getModel() {
         return model;
     }
-
+    @XmlElement
     public void setModel(String model) {
         this.model = model;
     }
@@ -71,7 +71,7 @@ public class Car implements Serializable {
     public float getPricePerDay() {
         return pricePerDay;
     }
-
+    @XmlElement
     public void setPricePerDay(float pricePerDay) {
         this.pricePerDay = pricePerDay;
     }

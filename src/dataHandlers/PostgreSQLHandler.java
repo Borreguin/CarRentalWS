@@ -184,7 +184,7 @@ public class PostgreSQLHandler {
         PreparedStatement ps;
         try {
             String sql_st = "DELETE FROM " + TableNameCar +
-                    " WHERE " + ModelID + " = " + model;
+                    " WHERE " + ModelID + " = '" + model + "'";
             ps = c.prepareCall(sql_st);
             ps.execute();
         } catch (SQLException e) {
@@ -226,17 +226,19 @@ public class PostgreSQLHandler {
             ps.execute();
 
             ResultSet rs = ps.getResultSet();
-            rs.next();
-            car = new Car(
+            if(rs.next())
+            {
+                car = new Car(
                     rs.getInt(1),       //ID
                     rs.getString(2),    //Model
                     rs.getString(3)     //Type
-            );
-            return car;
+                );
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return car;
         }
+        return car;
     }
 
     /***
