@@ -23,7 +23,7 @@ public class MainPage {
     public InputStream getMainPage() throws FileNotFoundException {
 
         // Getting an html file
-        String path = app_config.root() + "/Resources/default.html";
+        String path = app_config.root() + "/Resources/default.htm";
 
         File f = new File(path);
         return new FileInputStream(f);

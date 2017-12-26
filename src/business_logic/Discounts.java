@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Implements all kind of discounts
  */
-public class Discounts {
+class Discounts {
 
     private App_config app_config = new App_config();
 
@@ -26,20 +26,22 @@ public class Discounts {
      * @param dates a list of dates in string format
      * @return x% discount if this applies, otherwise 0%
      */
-    public float onWeekdays(List<String> dates) throws ParseException {
+    float onWeekdays(List<String> dates) throws ParseException {
         float discount_percentage = 0.f;
+        // A Gregorian calender is used for simplicity
         Calendar c = Calendar.getInstance();
         int dayOfWeek;
+        // Check whether a date is a week day
         for(String st_d: dates){
+            // Setup the formatter in @App_config.class
             Date day = app_config.formatter.parse(st_d);
             c.setTime(day);
             dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-
+            // Discounts values in @Business_conf.class
             if(dayOfWeek >= App_config.idMonday && dayOfWeek <= App_config.idMonday + 4 ){
                 return Business_conf.getDiscountValues().get("onWeekday");
             }
         }
-
         return discount_percentage;
     }
 
@@ -48,10 +50,11 @@ public class Discounts {
      * @param dates a list of dates in string format
      * @return x% discount if this applies, otherwise 0%
      */
-    public float byNumberOfDays(List<String> dates){
+    float byNumberOfDays(List<String> dates){
         float discount_percentage = 0.f;
         int nDays = dates.size();
 
+        // Discounts values in @Business_conf.class
         if( 3 <= nDays && nDays <= 5){
             return Business_conf.getDiscountValues().get("3 to 5");
         }
@@ -61,7 +64,6 @@ public class Discounts {
         if( 11 <= nDays ){
             return Business_conf.getDiscountValues().get("> 11");
         }
-
         return discount_percentage;
     }
 
@@ -70,9 +72,11 @@ public class Discounts {
      * @param isMember whether or not a client has a membership
      * @return x% discount if this applies, otherwise 0%
      */
-    public float byMembership(Boolean isMember){
+    float byMembership(Boolean isMember){
         float discount_percentage = 0.f;
-        if(isMember) return Business_conf.getDiscountValues().get("membership");
+        // Discounts values in @Business_conf.class
+        if(isMember)
+            return Business_conf.getDiscountValues().get("membership");
         return discount_percentage;
     }
 

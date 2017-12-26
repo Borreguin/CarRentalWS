@@ -15,14 +15,15 @@ import java.io.Serializable;
  */
 
 /**
- * The car class contains attributes according to the statement of the problem.\
- * Price per day setting is in /settings/Business_conf.java
+ * The @Car.class contains attributes according to the statement of the problem.
+ *      Price per day is according to @Business_conf.class
  */
-//This element (XmlRootElement) is important
+
+//XmlRootElement for XML representation of the class
 @XmlRootElement(name = "car")
 public class Car implements Serializable {
 
-    // the variable: @serialVersionUID is so important for XML format.
+    // @serialVersionUID for serialization of the class
     private static final long serialVersionUID = 1L;
     private int id;
     private String type;

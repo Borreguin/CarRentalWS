@@ -19,9 +19,9 @@ import java.util.List;
 
 /**
  * This manages the connection with the PostgreSQL server
- * This DB keeps the Business model to deal with.
- * The Handler tests the connection and the existence of the Business Model tables.
- * -> Note: Settings of the DB Server are in /settings/App_config.java
+ * This DB Server keeps the Business model to deal with.
+ * @PostgreSQLHandler.class tests the connection and the existence of the Business Model tables.
+ * -> Note: Settings of the DB Server are in /settings/App_config.class
  * This code assumes a trustful environment therefore not security policies are applied.
  *    Ex: DB administrator password
  */

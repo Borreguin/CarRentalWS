@@ -4,25 +4,29 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/***
+/*
  *   Author: Roberto Sanchez A. 
  *   Date:   12/19/17
- ***/
+ */
+
+/**
+ * Contains variables and settings for the business logic
+ */
 public class Business_conf {
 
-    /**
-     * Contains variables and settings of the business logic
-     */
-    public static final int young_age = 25; //age to apply recharges for people younger than @young_age
-    public static final int limit_age = 18; //client is at least @limit_age years old
+    // age to apply recharges for people younger than @young_age
+    public static final int young_age = 25;
+    // client is at least @limit_age years old
+    public static final int limit_age = 18;
+    // a x% increase for younger people
     public static final float recharge = 0.25f;
 
-    // TODO: (classification of cars could be in a database)
+    // TODO: classification of cars could be in a database
     // For simplicity and assuming that we are not going to change
-    // the classification of the cars, and prices:
+    // the classification of the cars and prices:
     private Map<String, Float> carPrice = new HashMap<>();
 
-    // TODO: list of discounts could be in a database
+    // TODO: list of discounts could be in a relational database
     // For simplicity, let's put the list of discounts in a HashMap variable
     private static Map<String, Float> discountValues = new HashMap<>();
 
@@ -55,21 +59,6 @@ public class Business_conf {
     }
 
 
-    /**
-     * auxiliary function
-     * @return the classification of car
-     */
-    public String getCar_classification(){
-
-        Set rsK  = carPrice.keySet();
-        String rs = "#";
-        for(Object ob : rsK){
-            rs += ",'" + ob + "'";
-        }
-        rs = rs.replace("#,","");
-        return rs;
-    }
-
     public float getCarPrice(String typeCar) {
         float rs = 0.f;
         try{
@@ -88,5 +77,20 @@ public class Business_conf {
 
     public static Map<String, Float> getPolicyValues() {
         return policyValues;
+    }
+
+    /**
+     * auxiliary function
+     * @return the classification of cars
+     */
+    public String getCar_classification(){
+
+        Set rsK  = carPrice.keySet();
+        StringBuilder rs = new StringBuilder("#");
+        for(Object ob : rsK){
+            rs.append(",'").append(ob).append("'");
+        }
+        rs = new StringBuilder(rs.toString().replace("#,", ""));
+        return rs.toString();
     }
 }

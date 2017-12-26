@@ -16,9 +16,10 @@ import java.util.Set;
 @ApplicationPath("/")
 /** It implements the main application where we can add the needed services
  * For now only:
- *   -
- *   -
+ *   - Car service
+ *   - Transaction service
  *
+ * Others can be added like: user service, etc.
  * @return running application
  */
 public class MainApp extends Application{
@@ -34,33 +35,8 @@ public class MainApp extends Application{
 
         HashSet h = new HashSet<Class<?>>();
         h.add(MainPage.class);
-        h.add(ResourcesService.class);
-
         // Here include the needed services
-         h.add(MainPage.class);
-        //h.add(UserService.class);
-        //h.add(imageService.class);
-        //h.add(BookService.class);
-        PostgreSQLHandler post = new PostgreSQLHandler();
-        //post.create_car_table();
-        //post.create_client_table();
-        post.insert_car(new Car("Eveo", "sport"));
-        post.insert_car(new Car("Dwarfy3", "small"));
-        //post.insert_client(new Client(true, 24));
-
-        /*List<Car> cars = post.getAllCars();
-        //List<Client> clients = post.getAllClients();
-
-        //Car car = post.getCar("Dwarfy");
-        //post.delete_car(car);
-
-        String json = "{\"rentDates\":[\"2017-11-19T05:00:00.000Z\",\"2017-11-20T05:00:00.000Z\",\"2017-11-21T05:00:00.000Z\"],\"car\":{\"model\":\"Cherato\",\"type\":\"sport\"},\"membership\":false,\"age\":24}";
-        //json = "{\"rentDates\":[\"2017-11-19T05:00:00.000Z\",\"2017-11-20T05:00:00.000Z\",\"2017-11-21T05:00:00.000Z\"],\"car\":{\"model\":\"Cherato\",\"type\":\"sport\"},\"membership\":false}";
-
-        JSONObject jsonObj = new JSONObject(json);
-        core.getTotalOfRent(jsonObj);*/
-
-
+        h.add(ResourcesService.class);
         return h;
     }
 

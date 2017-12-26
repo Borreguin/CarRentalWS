@@ -10,9 +10,28 @@ import classes.Car;
 import classes.Client;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import settings.Business_conf;
 
 import java.text.ParseException;
 import java.util.*;
+
+/**
+ * Core.class implements the core operation of the business and some auxiliary functions:
+ * Classify by type of car (small, sport, SUV) and set a price depending on the type of car
+ * (40USD/day for small cars, 60USD/day for sport cars, 100USD/day for SUV cars).
+ *  - Allow for a discount on weekdays (10%).
+ *  - Allow for a discount for number of rental days (3 or more).
+ *      For 3 to 5 days 5%.
+ *      For 6 to 10 days 10%
+ *      11 or more 15%
+ * Differentiate price for people subscribed to a membership plan (5%).
+ * Generate an insurance policy and differentiate its price for people younger than 25 years old.
+ * (5USD a day for the small car, 7USD a day for the sport car, 10USD a day for the SUV
+ * with a 25% increase for younger people). No discount applies over the insurance total.
+ * Make sure that the person renting the car is at least 18 years old.
+ *
+ */
+
 
 public class Core {
     // main variables:
@@ -46,16 +65,21 @@ public class Core {
      * @param inputJson it has the format "{"rentDates":["2017-11-19T05:00:00.000Z",...],
      *                  "car":{"model":"Cherato","type":"sport"},"membership":false,"age":24}"
      * @return  if the inputJson is correct (lazy check) then it calculates the total value to pay,
-     *          otherwise an empty json object.
+     *          otherwise a json object: {"transaction":"unsuccessful"} is returned.
      */
     public JSONObject getTotalOfRent(JSONObject inputJson)  {
-        JSONObject outputJson = new JSONObject();
-        if(!checkJSONObject(inputJson)){
-            return outputJson;
-        }
-        // Let's assume that inputJson is a valid Json input because @checkJSONObject
-        // makes a rigorous check
 
+        JSONObject outputJson = new JSONObject();
+        // check if @inputJson has the correct format.
+        if(!checkJSONObject(inputJson)){
+            outputJson.put("details","Incorrect Json format");
+            return outputJson.put("transaction","unsuccessful");
+        }
+
+        // Lets assume that inputJson is a valid Json input because @checkJSONObject
+        // makes a rigorous check then the following calculates the total value to pay:
+
+        // Make instances of @Car.class and @Client.class from the inputJson:
         JSONObject auxCar =  (JSONObject) inputJson.get(KeyCar);
         Car rentedCar = new Car(
                 (String) auxCar.get(KeyModel),
@@ -66,6 +90,15 @@ public class Core {
                 inputJson.getInt(KeyAge)
         );
 
+        // Before any further calculation, check if the client is at least @Business_conf.limit_age years old
+        if(renterClient.getAge() < Business_conf.limit_age){
+            System.out.println("Client age check. Client is " + renterClient.getAge() + " years old" +
+                    " ( < " + Business_conf.limit_age + ")");
+            outputJson.put("details","Client is not at least " + Business_conf.limit_age + " years old");
+            return outputJson.put("transaction","unsuccessful");
+        }
+
+        // List of the rented dates:
         List<String> rentDates = getListFromJsonArray(inputJson.getJSONArray(KeyRentDates));
 
         // To pay according to the type of car and number of days:
@@ -84,13 +117,16 @@ public class Core {
         // Apply insurance policy
         insurance_total = insurancePolicy.apply(rentDates.size(),renterClient.getAge(), rentedCar.getType());
 
+        // Calculate the total value to pay
         total = subtotal - subtotal*discount_total  + insurance_total;
 
+        // Creating the outputJson result:
         outputJson.put(KeySubtotal,subtotal);
         outputJson.put(KeyInsurance,insurance_total);
         outputJson.put(KeyDiscount,discount_total*100);
         outputJson.put(KeyTotalPayment,total);
-
+            // To remark that the process was successfully done
+        outputJson.put("transaction","successful");
 
         return outputJson;
     }
@@ -103,11 +139,9 @@ public class Core {
      * therefore this function calculates the subtotal according the number of days
      * @return calculates the subtotal according the number of days
      */
-   public float getPayValuePerDays(List<String> dates, float price){
+    private float getPayValuePerDays(List<String> dates, float price){
         return dates.size()*price;
     }
-
-
 
 
     // TODO: More rigours checking, it was done in this way only for simplicity
@@ -128,7 +162,7 @@ public class Core {
      * @param arr is a JSONArray
      * @return List of Strings
      */
-   private List<String> getListFromJsonArray(JSONArray arr){
+    private List<String> getListFromJsonArray(JSONArray arr){
 
         List<String> list = new ArrayList<>();
         for(Object element : arr){
