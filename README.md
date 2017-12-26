@@ -1,5 +1,4 @@
 # CarRentalWS
-Initial Settings...(app configuration, business configuration)
 This project was developed over:
 	- Java JDK 1.8
 	- Ubuntu 16.10
