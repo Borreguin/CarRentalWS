@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/postgresql:postgresql:9.2-1002.jdbc4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/org.glassfish.jersey.core:jersey-client:2.10"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GlassFish 5.0.0 - Bean Validation"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GlassFish 5.0.0 - RESTful Web Service"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GlassFish 5.0.0 - JSON Processing (JSR 353)"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GlassFish 5.0.0 - Connector Architecture (JSR 322)"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GlassFish 5.0.0 - WebSocket"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javax.servlet:javax.servlet-api:4.0.0"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/org.json:json:20170516"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/com.googlecode.json-simple:json-simple:1.1.1"/>
+	<classpathentry kind="output" path="out/production/CarRentalWS"/>
+</classpath>

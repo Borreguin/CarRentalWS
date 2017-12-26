@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/out/test/CarRentalWS"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="GlassFish 5.0.0 - Bean Validation" scope="PROVIDED"/>
+	<lib name="GlassFish 5.0.0 - RESTful Web Service" scope="PROVIDED"/>
+	<lib name="GlassFish 5.0.0 - JSON Processing (JSR 353)" scope="PROVIDED"/>
+	<lib name="GlassFish 5.0.0 - Connector Architecture (JSR 322)" scope="PROVIDED"/>
+	<lib name="GlassFish 5.0.0 - WebSocket" scope="PROVIDED"/>
+	<levels>
+		<level name="postgresql:postgresql:9.2-1002.jdbc4" value="project"/>
+		<level name="org.glassfish.jersey.core:jersey-client:2.10" value="project"/>
+		<level name="GlassFish 5.0.0 - Bean Validation" value="application_server_libraries"/>
+		<level name="GlassFish 5.0.0 - RESTful Web Service" value="application_server_libraries"/>
+		<level name="GlassFish 5.0.0 - JSON Processing (JSR 353)" value="application_server_libraries"/>
+		<level name="GlassFish 5.0.0 - Connector Architecture (JSR 322)" value="application_server_libraries"/>
+		<level name="GlassFish 5.0.0 - WebSocket" value="application_server_libraries"/>
+		<level name="javax.servlet:javax.servlet-api:4.0.0" value="project"/>
+		<level name="org.json:json:20170516" value="project"/>
+		<level name="com.googlecode.json-simple:json-simple:1.1.1" value="project"/>
+	</levels>
+</component>
